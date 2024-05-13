@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PmUlHTJuPT45qIt2hCXEPVo5GnO1qIIcm9DepsTdxwfBIGnX3fHLzDg4mTeTjVqdoczdbm7OBdkIBrulsICw1Q==",
+  "dgSpecHash": "+ZyVtqj1T/7QqcBq6+evBX0H9Xs+Zx06JtGu9HP6g8CCVMLPjSBw9Kkh4X3nWvYIxupqUL5oxhQp0Uo8Mnl5FA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\NetChallenge.csproj",
+  "projectFilePath": "D:\\Repositories\\net-challenge\\NetChallenge\\NetChallenge.csproj",
   "expectedPackageFiles": [
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"

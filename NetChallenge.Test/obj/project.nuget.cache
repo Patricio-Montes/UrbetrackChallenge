@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YmaE5ehio6TW/4LX1dqoyylKYOx2WjT5kgqvDdXCCFtEcGZBCHGZz1rkpzFzXfHx0zWfFdDEGmhrDSRf5LipFg==",
+  "dgSpecHash": "th8ekBA2QOmfrhJ9rh4n6CBlPZeMqD11EHCtUbFhhX/m1hH8oCcFbeN+LcYcWYZHrVV91jzbNfE6z+Ky4rFBzQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge.Test\\NetChallenge.Test.csproj",
+  "projectFilePath": "D:\\Repositories\\net-challenge\\NetChallenge.Test\\NetChallenge.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\monte\\.nuget\\packages\\microsoft.codecoverage\\16.7.1\\microsoft.codecoverage.16.7.1.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",

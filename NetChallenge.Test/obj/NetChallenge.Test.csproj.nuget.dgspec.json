@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge.Test\\NetChallenge.Test.csproj": {}
+    "D:\\Repositories\\net-challenge\\NetChallenge.Test\\NetChallenge.Test.csproj": {}
   },
   "projects": {
-    "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge.Test\\NetChallenge.Test.csproj": {
+    "D:\\Repositories\\net-challenge\\NetChallenge.Test\\NetChallenge.Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge.Test\\NetChallenge.Test.csproj",
+        "projectUniqueName": "D:\\Repositories\\net-challenge\\NetChallenge.Test\\NetChallenge.Test.csproj",
         "projectName": "NetChallenge.Test",
-        "projectPath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge.Test\\NetChallenge.Test.csproj",
+        "projectPath": "D:\\Repositories\\net-challenge\\NetChallenge.Test\\NetChallenge.Test.csproj",
         "packagesPath": "C:\\Users\\monte\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge.Test\\obj\\",
+        "outputPath": "D:\\Repositories\\net-challenge\\NetChallenge.Test\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -31,8 +31,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\NetChallenge.csproj": {
-                "projectPath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\NetChallenge.csproj"
+              "D:\\Repositories\\net-challenge\\NetChallenge\\NetChallenge.csproj": {
+                "projectPath": "D:\\Repositories\\net-challenge\\NetChallenge\\NetChallenge.csproj"
               }
             }
           }
@@ -87,14 +87,14 @@
         }
       }
     },
-    "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\NetChallenge.csproj": {
+    "D:\\Repositories\\net-challenge\\NetChallenge\\NetChallenge.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\NetChallenge.csproj",
+        "projectUniqueName": "D:\\Repositories\\net-challenge\\NetChallenge\\NetChallenge.csproj",
         "projectName": "NetChallenge",
-        "projectPath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\NetChallenge.csproj",
+        "projectPath": "D:\\Repositories\\net-challenge\\NetChallenge\\NetChallenge.csproj",
         "packagesPath": "C:\\Users\\monte\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\obj\\",
+        "outputPath": "D:\\Repositories\\net-challenge\\NetChallenge\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

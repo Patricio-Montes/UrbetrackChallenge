@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\NetChallenge.csproj",
+      "projectUniqueName": "D:\\Repositories\\net-challenge\\NetChallenge\\NetChallenge.csproj",
       "projectName": "NetChallenge",
-      "projectPath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\NetChallenge.csproj",
+      "projectPath": "D:\\Repositories\\net-challenge\\NetChallenge\\NetChallenge.csproj",
       "packagesPath": "C:\\Users\\monte\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\monte\\Downloads\\NetChallenge\\NetChallenge\\NetChallenge\\obj\\",
+      "outputPath": "D:\\Repositories\\net-challenge\\NetChallenge\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
