@@ -1,34 +1,23 @@
-﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NetChallenge.Abstractions;
 using NetChallenge.Application.Services;
-using NetChallenge.Infrastructure;
+using NetChallenge.Configurations;
 
 namespace NetChallenge
 {
     public class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-        }
-
-        public static ServiceProvider ConfigureServices()
-        {
+            // Configura los servicios
             var services = new ServiceCollection();
+            DependencyConfiguration.ConfigureServices(services);
+            var serviceProvider = services.BuildServiceProvider();
 
-            // Configuración de servicios
-            #region Repositories
-            services.AddScoped<IBookingRepository, BookingRepository>();
-            services.AddScoped<ILocationRepository, LocationRepository>();
-            services.AddScoped<IOfficeRepository, OfficeRepository>();
-            #endregion
-
-            #region Services
-            services.AddScoped<IMediator, Mediator>();
-            services.AddScoped<IOfficeRentalService, OfficeRentalService>();
-            #endregion
-
-            return services.BuildServiceProvider();
+            // Ahora puedes resolver tus servicios
+            var cacheService = serviceProvider.GetRequiredService<ICacheService>();
+            var locationRepository = serviceProvider.GetRequiredService<ILocationRepository>();
+            // Haz lo que necesites con tus servicios...
         }
     }
 }

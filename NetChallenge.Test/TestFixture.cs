@@ -1,24 +1,26 @@
 ﻿using System;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using NetChallenge.Abstractions;
-using NetChallenge.Infrastructure;
+using NetChallenge.Domain.Primitives;
 
 namespace NetChallenge.Test
 {
     public class TestFixture : IDisposable
     {
-        public ServiceProvider ServiceProvider { get; }
+        public Mock<IBookingRepository> IBookingRepositoryMock { get; }
+        public Mock<ILocationRepository> ILocationRepositoryMock { get; }
+        public Mock<IOfficeRepository> IOfficeRepositoryMock { get; }
+        public Mock<IUnitOfWork> IUnitOfWorkMock { get; }
+        public Mock<IMediator> IMediatorMock { get; }
 
         public TestFixture()
         {
-            var services = new ServiceCollection();
-            services.AddTransient<IBookingRepository, BookingRepository>();
-            services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<IOfficeRepository, OfficeRepository>();
-            services.AddTransient<IMediator, Mediator>();
-
-            ServiceProvider = services.BuildServiceProvider();
+            IBookingRepositoryMock = new Mock<IBookingRepository>();
+            ILocationRepositoryMock = new Mock<ILocationRepository>();
+            IOfficeRepositoryMock = new Mock<IOfficeRepository>();
+            IUnitOfWorkMock = new Mock<IUnitOfWork>();
+            IMediatorMock = new Mock<IMediator>();
         }
 
         public void Dispose()

@@ -8,9 +8,9 @@ namespace NetChallenge.Infrastructure
 {
     public class OfficeRepository : IOfficeRepository
     {
-        private readonly IApplicationPersistence<Office> _persistence;
+        private readonly IApplicationPersistence _persistence;
 
-        public OfficeRepository(IApplicationPersistence<Office> persistence)
+        public OfficeRepository(IApplicationPersistence persistence)
         {
             _persistence = persistence ?? throw new System.ArgumentNullException(nameof(persistence));
         }
@@ -22,7 +22,7 @@ namespace NetChallenge.Infrastructure
 
         public async Task<IEnumerable<Office>> GetAllAsync()
         {
-            return await _persistence.GetAllAsync();
+            return (IEnumerable<Office>) await _persistence.GetAsync("Location");
         }
 
         public async Task Add(Office item)

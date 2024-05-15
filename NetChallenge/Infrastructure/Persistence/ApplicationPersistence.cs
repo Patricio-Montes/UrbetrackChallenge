@@ -1,101 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
 using NetChallenge.Application.Data;
+using NetChallenge.Application.Services;
 
 namespace NetChallenge.Infrastructure.Persistence
 {
-    internal class ApplicationPersistence<TEntity> : IApplicationPersistence<TEntity> where TEntity : class
+    public class ApplicationPersistence : IApplicationPersistence
     {
-        private readonly IMemoryCache _cache;
+        private readonly ICacheService _cache;
 
-        public ApplicationPersistence(IMemoryCache cache)
+        public ApplicationPersistence(ICacheService cache)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<IEnumerable<object>> GetAsync(string keyPrefix)
         {
-            if (_cache.TryGetValue(id, out TEntity entity))
+            var cachedItems = await _cache.GetAllAsync<object>(keyPrefix, default);
+
+            return cachedItems;
+        }
+
+        public async Task AddAsync(object entity)
+        {
+            if (entity == null)
             {
-                return entity;
+                throw new ArgumentNullException(nameof(entity));
             }
 
-            return await Task.FromResult<TEntity>(null);
+            var entityType = entity.GetType();
+            var id = GetObjectId(entityType, entity);
+
+            var key = $"{entityType.Name}_{id}";
+
+            await _cache.SetAsync(key, entity);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task UpdateAsync(object entity)
         {
-            if (_cache.TryGetValue("AllItems", out IEnumerable<TEntity> items))
+            await AddAsync(entity);
+        }
+
+        public async Task DeleteAsync(object entity)
+        {
+            if (entity == null)
             {
-                return items;
+                throw new ArgumentNullException(nameof(entity));
             }
 
-            // Si no están en la caché, se deben recuperar de la fuente de datos principal,
-            // y luego almacenar en la caché para usos futuros.
-            // Por ahora, retornemos una lista vacía como ejemplo.
-            return await Task.FromResult<IEnumerable<TEntity>>(new List<TEntity>());
+            var entityType = entity.GetType();
+            var id = GetObjectId(entityType, entity);
+
+            var key = $"{entityType.Name}_{id}";
+            await _cache.RemoveAsync(key);
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        private Guid GetObjectId(Type entityType, object entity)
         {
-            // Implement the logic to add the object to the cache
-            int id = GetObjectId(entity);
-            _cache.Set(id, entity);
-            return await Task.FromResult(entity);
-        }
-
-        public async Task<TEntity> UpdateAsync(TEntity entity)
-        {
-            // Implement the logic to update the object in the cache
-            int id = GetObjectId(entity);
-            _cache.Set(id, entity);
-            return await Task.FromResult(entity);
-        }
-
-        public async Task DeleteAsync(TEntity entity)
-        {
-            // Implement the logic to remove the object from the cache
-            int id = GetObjectId(entity);
-            _cache.Remove(id);
-            await Task.CompletedTask;
-        }
-
-        public async Task<TEntity> GetFromCacheAsync(string key)
-        {
-            if (_cache.TryGetValue(key, out TEntity entity))
+            var property = entityType.GetProperty("Id");
+            if (property == null)
             {
-                return entity;
+                throw new ArgumentException("The Id property was not found in the entity.", nameof(entity));
             }
 
-            return await Task.FromResult<TEntity>(null);
-        }
-
-        public async Task AddToCacheAsync(string key, TEntity entity, TimeSpan? expiry = null)
-        {
-            _cache.Set(key, entity, expiry ?? TimeSpan.FromSeconds(60)); // Example expiry of 60 seconds
-            await Task.CompletedTask;
-        }
-
-        public async Task RemoveFromCacheAsync(string key)
-        {
-            _cache.Remove(key);
-            await Task.CompletedTask;
+            return (Guid)property.GetValue(entity);
         }
 
         public void Dispose()
         {
-            // Implement the logic to release resources if necessary
-        }
-
-        // This helper method is just an example. Implement it according to your actual needs.
-        private int GetObjectId(TEntity entity)
-        {
-            // Implement the logic to get the ID of the object
-            // This can vary depending on your entity structure
-            // This method is just a schema of how you could do it
-            return 0;
+            // Implementa la disposición de recursos si es necesario
         }
     }
 }

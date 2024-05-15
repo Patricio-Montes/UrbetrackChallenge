@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using Xunit;
 using NetChallenge.Domain;
+using Microsoft.Extensions.DependencyInjection;
+using NetChallenge.Application.Services;
+using NetChallenge.Configurations;
+using System;
 
 namespace NetChallenge.Test.Application.Locations.Create
 {

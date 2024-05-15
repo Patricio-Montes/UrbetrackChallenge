@@ -7,13 +7,13 @@ using NetChallenge.Application.CQRS.Locations.Read.GetAll;
 using NetChallenge.Domain;
 using Xunit;
 
-namespace NetChallenge.Test.Application.Locations.Read.GetAll
+namespace NetChallenge.Test.Application .Locations.Read.GetAll
 {
-    public class GetAllLocationsQueryHandlerTest : IClassFixture<ServiceFixture>
+    public class GetAllLocationsQueryHandlerTest : IClassFixture<TestFixture>
     {
-        private readonly ServiceFixture _fixture;
+        private readonly TestFixture _fixture;
 
-        public GetAllLocationsQueryHandlerTest(ServiceFixture fixture)
+        public GetAllLocationsQueryHandlerTest(TestFixture fixture)
         {
             _fixture = fixture;
         }
