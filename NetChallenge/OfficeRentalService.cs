@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MediatR;
 using NetChallenge.Application.CQRS.Locations.Create;
 using NetChallenge.Application.CQRS.Locations.Read.GetAll;
@@ -20,16 +19,16 @@ namespace NetChallenge
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public async Task AddLocation(AddLocationRequest request)
+        public void AddLocation(AddLocationRequest request)
         {
             try
             {
                 var command = MapToAddLocationCommand(request);
-                await _mediator.Send(command);
+                _mediator.Send(command).Wait();
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                throw ex.InnerExceptions.FirstOrDefault();
             }
         }
 
@@ -72,11 +71,6 @@ namespace NetChallenge
         }
 
         public IEnumerable<OfficeDto> GetOfficeSuggestions(SuggestionsRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IOfficeRentalService.AddLocation(AddLocationRequest request)
         {
             throw new NotImplementedException();
         }

@@ -1,11 +1,10 @@
 ﻿using System;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using NetChallenge.Abstractions;
+using NetChallenge.Application.Configuration;
 using NetChallenge.Application.Data;
 using NetChallenge.Application.Services;
-using NetChallenge.Domain.Primitives;
 using NetChallenge.Infrastructure;
 using NetChallenge.Infrastructure.Persistence;
 using NetChallenge.Infrastructure.Services;
@@ -18,7 +17,6 @@ namespace NetChallenge.Test.Configurations
         public Mock<IBookingRepository> IBookingRepositoryMock { get; }
         public Mock<ILocationRepository> ILocationRepositoryMock { get; }
         public Mock<IOfficeRepository> IOfficeRepositoryMock { get; }
-        public Mock<IUnitOfWork> IUnitOfWorkMock { get; }
         public Mock<IMediator> IMediatorMock { get; }
 
         public TestFixture()
@@ -26,21 +24,32 @@ namespace NetChallenge.Test.Configurations
             IBookingRepositoryMock = new Mock<IBookingRepository>();
             ILocationRepositoryMock = new Mock<ILocationRepository>();
             IOfficeRepositoryMock = new Mock<IOfficeRepository>();
-            IUnitOfWorkMock = new Mock<IUnitOfWork>();
             IMediatorMock = new Mock<IMediator>();
 
             var services = new ServiceCollection();
             services.AddDistributedMemoryCache();
+            services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssemblyContaining<ApplicationAssemblyReference>();
+            });
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IApplicationPersistence, ApplicationPersistence>();
+            services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IOfficeRepository, OfficeRepository>();
 
             ServiceProvider = services.BuildServiceProvider();
+
+            ServiceProvider.GetRequiredService<IMediator>();
+            ServiceProvider.GetRequiredService<ILocationRepository>();
         }
 
         public void Dispose()
         {
-            // No es necesario limpiar recursos en este caso
+            if (ServiceProvider is not null && ServiceProvider is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
         }
     }
 }

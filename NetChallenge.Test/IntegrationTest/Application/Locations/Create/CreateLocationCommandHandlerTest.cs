@@ -23,11 +23,9 @@ namespace NetChallenge.Test.IntegrationTest.Application.Locations.Create
         public async Task Handle_Create_Should_VerifyItem_And_Return_Unit()
         {
             // Arrange
-            var unitOfWorkMock = _fixture.IUnitOfWorkMock;
-
             var locationRepository = _fixture.ServiceProvider.GetRequiredService<ILocationRepository>();
 
-            var handler = new CreateLocationCommandHandler(unitOfWorkMock.Object, locationRepository);
+            var handler = new CreateLocationCommandHandler(locationRepository);
             var request = new CreateLocationCommand("Location_Name", "Neighborhood_");
 
             // Act

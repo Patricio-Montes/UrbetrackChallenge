@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NetChallenge.Infrastructure.Services
 {
-    public class CacheService : ICacheService
+    public class CacheService : ICacheService, IDisposable
     {
         private static readonly ConcurrentDictionary<string, bool> CacheKeys = new ();
         private readonly IDistributedCache _distributedCache;
@@ -94,6 +94,25 @@ namespace NetChallenge.Infrastructure.Services
                 .Select(k => RemoveAsync(k, cancellationToken));
 
             await Task.WhenAll(tasks);
+        }
+
+        public void Clear(CancellationToken cancellationToken = default)
+        {
+            var keys = CacheKeys.Keys.ToList();
+
+            foreach (var key in keys)
+            {
+                _distributedCache.RemoveAsync(key, cancellationToken);
+                CacheKeys.TryRemove(key, out _);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_distributedCache is IDisposable disposableCache)
+            {
+                disposableCache.Dispose();
+            }
         }
     }
 }

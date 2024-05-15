@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using NetChallenge.Abstractions;
 using NetChallenge.Application.Data;
 using NetChallenge.Domain;
+using NetChallenge.Infrastructure.Helpers;
 using Newtonsoft.Json;
 
 namespace NetChallenge.Infrastructure
@@ -27,19 +28,32 @@ namespace NetChallenge.Infrastructure
         {
             var result = await _persistence.GetAsync("Location");
 
-            var locationListResults = result.Select(item =>
+            if (result is null || !result.Any())
             {
-                // Deserializa cada elemento a un objeto de tipo Location
-                var locationJson = JsonConvert.SerializeObject(item);
-                return JsonConvert.DeserializeObject<Location>(locationJson);
-            }).ToList();
+                return new List<Location>();
+            }
 
-            return locationListResults;
+            return SerializationHelper.DeserializeList<Location>(result);
         }
 
         public async Task Add(Location item)
         {
             await _persistence.AddAsync(item);
+        }
+
+        public async Task<Location> GetByName(string name)
+        {
+            var result = await _persistence.GetAsync("Location");
+
+            if (result is null || !result.Any())
+            {
+                return null;
+            }
+
+            var locationListResults = SerializationHelper.DeserializeList<Location>(result);
+
+            return locationListResults.FirstOrDefault(loc =>
+                loc.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

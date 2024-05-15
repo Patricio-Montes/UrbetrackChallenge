@@ -1,6 +1,5 @@
 ﻿using NetChallenge.Domain;
 using System.Threading.Tasks;
-using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;

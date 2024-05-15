@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using NetChallenge.Abstractions;
 using NetChallenge.Application.CQRS.Locations.Responses;
+using NetChallenge.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +18,26 @@ namespace NetChallenge.Application.CQRS.Locations.Read.GetAll
         {
             _locationRepository = locationRepository ?? throw new ArgumentNullException(nameof(locationRepository));
         }
-
         public async Task<IEnumerable<LocationResponse>> Handle(GetAllLocationsQuery query, CancellationToken cancellationToken)
         {
             var locations = await _locationRepository.GetAllAsync();
 
-            return locations
-                   .Select(location => new LocationResponse(
-                   location.Id,
-                   location.Name,
-                   location.Neighborhood))
-                   .ToList();
+            if (locations is null || !locations.Any())
+            {
+                return Enumerable.Empty<LocationResponse>();
+            }
+
+            // TODO: Se podria utilizar model mapper
+            return locations.Select(location => MapToLocationResponse(location));
+        }
+
+        private LocationResponse MapToLocationResponse(Location location)
+        {
+            return new LocationResponse(
+                location.Id,
+                location.Name,
+                location.Neighborhood
+            );
         }
     }
 }

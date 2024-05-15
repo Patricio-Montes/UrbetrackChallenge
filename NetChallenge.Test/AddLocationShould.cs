@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Linq;
 using NetChallenge.Test.Utils;
-using Xunit;
 
 namespace NetChallenge.Test
 {
     public class AddLocationShould : OfficeRentalServiceTest
     {
+        public AddLocationShould(TestFixture fixture) : base(fixture)
+        {
+        }
+
         [Fact]
         public void AddLocation()
         {

@@ -7,7 +7,7 @@ namespace NetChallenge.Test
 {
     public class BookOfficeShould : OfficeRentalServiceTest
     {
-        public BookOfficeShould()
+        public BookOfficeShould(TestFixture fixture) : base(fixture)
         {
             Service.AddLocation(AddLocationRequestMother.Default);
             Service.AddLocation(AddLocationRequestMother.Central);

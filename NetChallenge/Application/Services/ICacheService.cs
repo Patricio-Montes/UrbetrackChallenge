@@ -22,5 +22,7 @@ namespace NetChallenge.Application.Services
         Task RemoveAsync(string key, CancellationToken cancellationToken = default);
 
         Task RemoveByPrefixAsync(string prefixKey, CancellationToken cancellationToken = default);
+
+        void Clear(CancellationToken cancellationToken = default);
     }
 }

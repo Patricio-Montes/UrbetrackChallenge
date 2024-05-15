@@ -1,28 +1,33 @@
 ﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using NetChallenge.Abstractions;
-using NetChallenge.Application.Data;
-using NetChallenge.Infrastructure;
+using System;
 
 namespace NetChallenge.Test
 {
     public class OfficeRentalServiceTest : IClassFixture<TestFixture>
     {
+        private readonly TestFixture _fixture;
         protected OfficeRentalService Service;
         protected ILocationRepository LocationRepository;
         protected IOfficeRepository OfficeRepository;
         protected IBookingRepository BookingRepository;
+        protected IMediator Mediator;
 
-        public OfficeRentalServiceTest()
+        public OfficeRentalServiceTest(TestFixture fixture)
         {
-            var applicationPersistence = new Mock<IApplicationPersistence>();
+            _fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
 
-            LocationRepository = new LocationRepository(applicationPersistence.Object);
-            OfficeRepository = new OfficeRepository(applicationPersistence.Object);
-            BookingRepository = new BookingRepository();
+            var locationRepository = _fixture.ServiceProvider.GetRequiredService<ILocationRepository>();
+            var officeRepository = _fixture.ServiceProvider.GetRequiredService<IOfficeRepository>();
+            var bookingRepository = _fixture.ServiceProvider.GetRequiredService<IBookingRepository>();
+            var mediator = _fixture.ServiceProvider.GetRequiredService<IMediator>();
 
-            var mediatorMock = new Mock<IMediator>();
+            LocationRepository = locationRepository;
+            OfficeRepository = officeRepository;
+            BookingRepository = bookingRepository;
 
-            Service = new OfficeRentalService(mediatorMock.Object);
+            Service = new OfficeRentalService(mediator);
         }
     }
 }
