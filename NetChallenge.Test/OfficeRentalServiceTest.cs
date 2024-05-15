@@ -1,4 +1,9 @@
-﻿using NetChallenge.Abstractions;
+﻿using MediatR;
+using Moq;
+using NetChallenge.Abstractions;
+using NetChallenge.Application.CQRS.Locations.Create;
+using NetChallenge.Application.Data;
+using NetChallenge.Domain;
 using NetChallenge.Infrastructure;
 
 namespace NetChallenge.Test
@@ -12,10 +17,18 @@ namespace NetChallenge.Test
 
         public OfficeRentalServiceTest()
         {
-            LocationRepository = new LocationRepository();
-            OfficeRepository = new OfficeRepository();
+            var locationPersistenceMock = new Mock<IApplicationPersistence<Location>>();
+            LocationRepository = new LocationRepository(locationPersistenceMock.Object);
+
+            var officePersistenceMock = new Mock<IApplicationPersistence<Office>>();
+            OfficeRepository = new OfficeRepository(officePersistenceMock.Object);
             BookingRepository = new BookingRepository();
-            Service = new OfficeRentalService(LocationRepository, OfficeRepository, BookingRepository);
+
+            var mediatorMock = new Mock<IMediator>();
+            mediatorMock.Setup(m => m.Send(It.IsAny<CreateLocationCommand>(), default))
+            .ReturnsAsync(Unit.Value);
+
+            Service = new OfficeRentalService(mediatorMock.Object);
         }
     }
 }

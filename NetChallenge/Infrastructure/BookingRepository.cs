@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using NetChallenge.Abstractions;
 using NetChallenge.Domain;
 
@@ -11,7 +12,12 @@ namespace NetChallenge.Infrastructure
             throw new System.NotImplementedException();
         }
 
-        public void Add(Booking item)
+        public Task<IEnumerable<Booking>> GetAllAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task Add(Booking item)
         {
             throw new System.NotImplementedException();
         }
