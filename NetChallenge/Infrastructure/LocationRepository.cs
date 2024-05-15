@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using NetChallenge.Abstractions;
 using NetChallenge.Application.Data;
 using NetChallenge.Domain;
+using Newtonsoft.Json;
 
 namespace NetChallenge.Infrastructure
 {
@@ -21,9 +23,18 @@ namespace NetChallenge.Infrastructure
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Location>> GetAllAsync()
+        public async Task<List<Location>> GetAllAsync()
         {
-            return (IEnumerable<Location>) await _persistence.GetAsync("Location");
+            var result = await _persistence.GetAsync("Location");
+
+            var locationListResults = result.Select(item =>
+            {
+                // Deserializa cada elemento a un objeto de tipo Location
+                var locationJson = JsonConvert.SerializeObject(item);
+                return JsonConvert.DeserializeObject<Location>(locationJson);
+            }).ToList();
+
+            return locationListResults;
         }
 
         public async Task Add(Location item)

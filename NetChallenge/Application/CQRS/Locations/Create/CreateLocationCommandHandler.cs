@@ -25,6 +25,7 @@ namespace NetChallenge.Application.CQRS.Locations.Create
             {
                 var location = new Location
                 {
+                    Id = new Guid(),
                     Name = request.Name,
                     Neighborhood = request.Neighborhood
                 };

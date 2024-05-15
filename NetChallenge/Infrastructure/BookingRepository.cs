@@ -12,7 +12,7 @@ namespace NetChallenge.Infrastructure
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<Booking>> GetAllAsync()
+        public Task<List<Booking>> GetAllAsync()
         {
             throw new System.NotImplementedException();
         }

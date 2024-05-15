@@ -6,7 +6,7 @@ namespace NetChallenge.Abstractions
     public interface IRepository<T>
     {
         IEnumerable<T> AsEnumerable();
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<List<T>> GetAllAsync();
         Task Add(T item);
     }
 }

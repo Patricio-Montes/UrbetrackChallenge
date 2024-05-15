@@ -1,12 +1,11 @@
 ﻿using MediatR;
-using Moq;
 using NetChallenge.Abstractions;
 using NetChallenge.Application.Data;
 using NetChallenge.Infrastructure;
 
 namespace NetChallenge.Test
 {
-    public class OfficeRentalServiceTest
+    public class OfficeRentalServiceTest : IClassFixture<TestFixture>
     {
         protected OfficeRentalService Service;
         protected ILocationRepository LocationRepository;

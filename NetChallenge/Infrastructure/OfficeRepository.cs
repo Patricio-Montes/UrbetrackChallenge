@@ -20,9 +20,9 @@ namespace NetChallenge.Infrastructure
             throw new System.NotImplementedException();
         }
 
-        public async Task<IEnumerable<Office>> GetAllAsync()
+        public async Task<List<Office>> GetAllAsync()
         {
-            return (IEnumerable<Office>) await _persistence.GetAsync("Location");
+            throw new System.NotImplementedException();
         }
 
         public async Task Add(Office item)

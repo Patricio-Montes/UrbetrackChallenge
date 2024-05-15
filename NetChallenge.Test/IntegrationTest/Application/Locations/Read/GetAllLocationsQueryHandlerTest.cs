@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using NetChallenge.Application.CQRS.Locations.Create;
 using NetChallenge.Application.CQRS.Locations.Read.GetAll;
 using NetChallenge.Domain;
-using Xunit;
 
-namespace NetChallenge.Test.Application .Locations.Read.GetAll
+namespace NetChallenge.Test.IntegrationTest.Application.Locations.Read
 {
     public class GetAllLocationsQueryHandlerTest : IClassFixture<TestFixture>
     {
