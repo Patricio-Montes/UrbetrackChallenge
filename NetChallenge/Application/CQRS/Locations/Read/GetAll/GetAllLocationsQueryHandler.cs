@@ -18,6 +18,7 @@ namespace NetChallenge.Application.CQRS.Locations.Read.GetAll
         {
             _locationRepository = locationRepository ?? throw new ArgumentNullException(nameof(locationRepository));
         }
+
         public async Task<IEnumerable<LocationResponse>> Handle(GetAllLocationsQuery query, CancellationToken cancellationToken)
         {
             var locations = await _locationRepository.GetAllAsync();

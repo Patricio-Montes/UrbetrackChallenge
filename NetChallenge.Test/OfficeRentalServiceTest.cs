@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NetChallenge.Abstractions;
+using NetChallenge.Application.Services;
 using System;
 
 namespace NetChallenge.Test
 {
-    public class OfficeRentalServiceTest : IClassFixture<TestFixture>
+    public class OfficeRentalServiceTest : IClassFixture<TestFixture>, IDisposable
     {
         private readonly TestFixture _fixture;
         protected OfficeRentalService Service;
@@ -28,6 +29,11 @@ namespace NetChallenge.Test
             BookingRepository = bookingRepository;
 
             Service = new OfficeRentalService(mediator);
+        }
+
+        public void Dispose()
+        {
+            _fixture.ServiceProvider.GetRequiredService<ICacheService>().Clear();
         }
     }
 }

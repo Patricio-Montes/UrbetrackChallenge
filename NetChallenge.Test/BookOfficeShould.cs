@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NetChallenge.Test.Utils;
-using Xunit;
 
 namespace NetChallenge.Test
 {

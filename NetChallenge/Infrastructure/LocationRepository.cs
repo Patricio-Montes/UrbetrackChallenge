@@ -6,7 +6,6 @@ using NetChallenge.Abstractions;
 using NetChallenge.Application.Data;
 using NetChallenge.Domain;
 using NetChallenge.Infrastructure.Helpers;
-using Newtonsoft.Json;
 
 namespace NetChallenge.Infrastructure
 {
@@ -21,7 +20,7 @@ namespace NetChallenge.Infrastructure
 
         public IEnumerable<Location> AsEnumerable()
         {
-            throw new NotImplementedException();
+            return GetAllAsync().Result;
         }
 
         public async Task<List<Location>> GetAllAsync()
