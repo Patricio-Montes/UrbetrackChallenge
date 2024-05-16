@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NetChallenge.Application.CQRS.Locations.Create
 {
-    public class CreateLocationCommandHandler : IRequestHandler<CreateLocationCommand, Unit>
+    public sealed class CreateLocationCommandHandler : IRequestHandler<CreateLocationCommand, Unit>
     {
         private readonly ILocationRepository _locationRepository;
 
@@ -41,14 +41,14 @@ namespace NetChallenge.Application.CQRS.Locations.Create
                 Neighborhood = request.Neighborhood
             };
 
-            await _locationRepository.Add(location);
+            _locationRepository.Add(location);
 
             return Unit.Value;
         }
 
         private bool LocationExists(string name)
         {
-            return _locationRepository.GetByName(name).Result is not null;
+            return _locationRepository.GetByName(name) is not null;
         }
     }
 }

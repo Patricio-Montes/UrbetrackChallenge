@@ -20,30 +20,26 @@ namespace NetChallenge.Infrastructure
 
         public IEnumerable<Booking> AsEnumerable()
         {
-            return GetAllAsync().Result;
-        }
-
-        public async Task<List<Booking>> GetAllAsync()
-        {
-            var result = await _persistence.GetAsync("Booking");
+            var result = _persistence.GetAsync("Booking").Result;
 
             if (result is null || !result.Any())
             {
-                return new List<Booking>();
+                return Enumerable.Empty<Booking>();
             }
 
             return SerializationHelper.DeserializeList<Booking>(result);
         }
 
-        public async Task Add(Booking item)
+        public void Add(Booking item)
         {
-            await _persistence.AddAsync(item);
+            _persistence.AddAsync(item);
         }
 
-        public async Task<List<Booking>> GetBookingsByOffice(Guid officeId)
+        public List<Booking> GetBookingsByOffice(Guid officeId)
         {
-            var allBookings = await GetAllAsync();
-            return allBookings.Where(b => b.Office.Id == officeId).ToList();
+            return AsEnumerable()
+                    .Where(b => b.Office.Id == officeId)
+                    .ToList();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace NetChallenge.Application.CQRS.Bookings.Read.GetAll
 
         public async Task<IEnumerable<BookingResponse>> Handle(GetAllBookingsQuery request, CancellationToken cancellationToken)
         {
-            var bookings = await _bookingRepository.GetAllAsync();
+            var bookings = _bookingRepository.AsEnumerable();
 
             if (bookings is null || !bookings.Any())
             {

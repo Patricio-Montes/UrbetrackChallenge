@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using NetChallenge.Abstractions;
 using NetChallenge.Application.Data;
 using NetChallenge.Domain;
@@ -20,12 +19,7 @@ namespace NetChallenge.Infrastructure
 
         public IEnumerable<Location> AsEnumerable()
         {
-            return GetAllAsync().Result;
-        }
-
-        public async Task<List<Location>> GetAllAsync()
-        {
-            var result = await _persistence.GetAsync("Location");
+            var result = _persistence.GetAsync("Location").Result;
 
             if (result is null || !result.Any())
             {
@@ -35,23 +29,14 @@ namespace NetChallenge.Infrastructure
             return SerializationHelper.DeserializeList<Location>(result);
         }
 
-        public async Task Add(Location item)
+        public void Add(Location item)
         {
-            await _persistence.AddAsync(item);
+            _persistence.AddAsync(item);
         }
 
-        public async Task<Location> GetByName(string name)
+        public Location GetByName(string name)
         {
-            var result = await _persistence.GetAsync("Location");
-
-            if (result is null || !result.Any())
-            {
-                return null;
-            }
-
-            var locationListResults = SerializationHelper.DeserializeList<Location>(result);
-
-            return locationListResults.FirstOrDefault(loc =>
+            return AsEnumerable().FirstOrDefault(loc =>
                 loc.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
     }

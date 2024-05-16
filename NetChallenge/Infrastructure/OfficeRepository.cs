@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using NetChallenge.Abstractions;
 using NetChallenge.Application.Data;
 using NetChallenge.Domain;
@@ -21,12 +19,7 @@ namespace NetChallenge.Infrastructure
 
         public IEnumerable<Office> AsEnumerable()
         {
-            return GetAllAsync().Result;
-        }
-
-        public async Task<List<Office>> GetAllAsync()
-        {
-            var result = await _persistence.GetAsync("Office");
+            var result = _persistence.GetAsync("Office").Result;
 
             if (result is null || !result.Any())
             {
@@ -36,24 +29,15 @@ namespace NetChallenge.Infrastructure
             return SerializationHelper.DeserializeList<Office>(result);
         }
 
-        public async Task Add(Office item)
+        public void Add(Office item)
         {
-            await _persistence.AddAsync(item);
+            _persistence.AddAsync(item);
         }
 
-        public async Task<List<Office>> Get(string locationName)
+        public List<Office> Get(string locationName)
         {
-            var result = await _persistence.GetAsync("Office");
-
-            if (result is null || !result.Any())
-            {
-                return new List<Office>();
-            }
-
-            var officeListResults = SerializationHelper.DeserializeList<Office>(result);
-
-            return officeListResults.Where(office =>
-                   office.Location.Name.Equals(locationName, StringComparison.OrdinalIgnoreCase))
+            return AsEnumerable()
+                   .Where(office => office.Location.Name.Equals(locationName, StringComparison.OrdinalIgnoreCase))
                    .ToList();
         }
     }

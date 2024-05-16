@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NetChallenge.Application.CQRS.Offices.Create
 {
-    public class CreateOfficeCommandHandler : IRequestHandler<CreateOfficeCommand, Unit>
+    internal sealed class CreateOfficeCommandHandler : IRequestHandler<CreateOfficeCommand, Unit>
     {
         private readonly IOfficeRepository _officeRepository;
         private readonly ILocationRepository _locationRepository;
@@ -42,7 +42,7 @@ namespace NetChallenge.Application.CQRS.Offices.Create
                 Resources = resources
             };
 
-            await _officeRepository.Add(office);
+            _officeRepository.Add(office);
 
             return Unit.Value;
         }
@@ -78,13 +78,13 @@ namespace NetChallenge.Application.CQRS.Offices.Create
 
         private Location GetLocation(string locationName)
         {
-            return _locationRepository.GetByName(locationName).Result;
+            return _locationRepository.GetByName(locationName);
         }
 
         private bool OfficeExistsOnLocation(string locationName, string officeName)
         {
             var office = _officeRepository
-                .GetAllAsync().Result
+                .AsEnumerable()
                 .FirstOrDefault(o => o.Location.Name == locationName && o.Name == officeName);
 
             return office != null;

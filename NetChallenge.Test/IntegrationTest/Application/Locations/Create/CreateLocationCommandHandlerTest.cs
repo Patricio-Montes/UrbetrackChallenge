@@ -30,7 +30,7 @@ namespace NetChallenge.Test.IntegrationTest.Application.Locations.Create
 
             // Act
             var result = await handler.Handle(request, CancellationToken.None);
-            var locationListResults = await locationRepository.GetAllAsync();
+            var locationListResults = locationRepository.AsEnumerable();
 
             var locationResult = locationListResults.FirstOrDefault();
 

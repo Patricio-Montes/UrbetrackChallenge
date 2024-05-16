@@ -11,17 +11,12 @@ namespace NetChallenge.Infrastructure.Helpers
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public static List<T> DeserializeList<T>(IEnumerable<object> items)
+        public static IEnumerable<T> DeserializeList<T>(IEnumerable<object> items)
         {
-            var resultList = new List<T>();
-
             foreach (var item in items)
             {
-                var deserializedItem = Deserialize<T>(item);
-                resultList.Add(deserializedItem);
+                yield return Deserialize<T>(item);
             }
-
-            return resultList;
         }
     }
 }

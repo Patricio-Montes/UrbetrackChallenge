@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NetChallenge.Application.CQRS.Bookings.Create
 {
-    internal class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, Unit>
+    internal sealed class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, Unit>
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly ILocationRepository _locationRepository;
@@ -35,7 +35,7 @@ namespace NetChallenge.Application.CQRS.Bookings.Create
                 User = new User { Id = Guid.NewGuid(), Name = request.UserName },
             };
 
-            await _bookingRepository.Add(booking);
+            _bookingRepository.Add(booking);
 
             return Unit.Value;
         }
@@ -73,20 +73,20 @@ namespace NetChallenge.Application.CQRS.Bookings.Create
         private Office GetOffice(string locationName, string officeName)
         {
             return _officeRepository
-                 .Get(locationName).Result
+                 .Get(locationName)
                  .Where(o => o.Name == officeName)
                  .FirstOrDefault();
         }
 
         private Location GetLocation(string locationName)
         {
-            return _locationRepository.GetByName(locationName).Result;
+            return _locationRepository.GetByName(locationName);
         }
 
         private bool IsOfficeBooked(Office office, DateTime startTime, TimeSpan duration)
         {
             var endTime = startTime.Add(duration);
-            var existingBookings = _bookingRepository.GetBookingsByOffice(office.Id).Result;
+            var existingBookings = _bookingRepository.GetBookingsByOffice(office.Id);
 
             foreach (var booking in existingBookings)
             {

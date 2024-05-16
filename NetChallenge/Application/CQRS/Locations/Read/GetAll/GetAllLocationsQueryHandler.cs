@@ -21,7 +21,7 @@ namespace NetChallenge.Application.CQRS.Locations.Read.GetAll
 
         public async Task<IEnumerable<LocationResponse>> Handle(GetAllLocationsQuery query, CancellationToken cancellationToken)
         {
-            var locations = await _locationRepository.GetAllAsync();
+            var locations = _locationRepository.AsEnumerable();
 
             if (locations is null || !locations.Any())
             {

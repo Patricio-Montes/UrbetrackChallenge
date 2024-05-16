@@ -21,7 +21,7 @@ namespace NetChallenge.Application.CQRS.Offices.Read.GetAll
 
         public async Task<IEnumerable<OfficeResponse>> Handle(GetAllOfficesQuery request, CancellationToken cancellationToken)
         {
-            var offices = await _officeRepository.Get(request.locationName);
+            var offices = _officeRepository.Get(request.locationName);
 
             if (offices is null || !offices.Any())
             {
