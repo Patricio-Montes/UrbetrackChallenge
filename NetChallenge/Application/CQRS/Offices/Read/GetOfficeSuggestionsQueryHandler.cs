@@ -34,9 +34,7 @@ namespace NetChallenge.Application.CQRS.Offices.Read
 
             var orderingStrategies = new List<IOrderingStrategy<Office>>
             {
-                OfficeOrderingStrategies.NeighborhoodOrderingStrategy(request.PreferedNeigborHood),
-                OfficeOrderingStrategies.CapacityOrderingStrategy(),
-                OfficeOrderingStrategies.ResourcesOrderingStrategy(request.ResourcesNeeded),
+                OfficeOrderingStrategies.ExecuteStrategy(request.PreferedNeigborHood, request.ResourcesNeeded),
             };
             var compositeOrderingStrategy = OfficeOrderingStrategies.CompositeOrderingStrategy(orderingStrategies);
 

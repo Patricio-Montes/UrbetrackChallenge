@@ -1,92 +1,63 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using NetChallenge.Application.Services;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using NetChallenge.Application.Services;
+using Newtonsoft.Json;
 
 namespace NetChallenge.Infrastructure.Services
 {
-    public class CacheService : ICacheService, IDisposable
+    public class CacheService : ICacheService
     {
-        private static readonly ConcurrentDictionary<string, bool> CacheKeys = new();
-        private readonly IDistributedCache _distributedCache;
+        private readonly Dictionary<string, string> _cache = new Dictionary<string, string>();
+        private readonly HashSet<string> _cacheKeys = new HashSet<string>();
 
-        public CacheService(IDistributedCache distributedCache)
+        public Task<T> GetAsync<T>(string key, CancellationToken cancellationToken = default) where T : class
         {
-            _distributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
-        }
-
-        public async Task<T> GetAsync<T>(string key, CancellationToken cancellationToken = default) where T : class
-        {
-            string? cachedValue = await _distributedCache.GetStringAsync(
-                key,
-                cancellationToken);
-
-            if (cachedValue is null)
+            if (_cache.TryGetValue(key, out string cachedValue))
             {
-                return null;
+                return Task.FromResult(JsonConvert.DeserializeObject<T>(cachedValue));
             }
-
-            T? value = JsonConvert.DeserializeObject<T>(cachedValue);
-
-            return value;
+            return Task.FromResult<T>(null);
         }
 
         public async Task<List<T>> GetAllAsync<T>(string keyPrefix, CancellationToken cancellationToken = default) where T : class
         {
-            var keys = CacheKeys.Keys.Where(k => k.StartsWith(keyPrefix)).ToList();
-
             var cachedValues = new List<T>();
 
-            foreach (var key in keys)
+            foreach (var kvp in _cache)
             {
-                var cachedValue = await GetAsync<T>(key, cancellationToken);
-                if (cachedValue != null)
+                if (kvp.Key.StartsWith(keyPrefix))
                 {
-                    cachedValues.Add(cachedValue);
+                    var cachedValue = JsonConvert.DeserializeObject<T>(kvp.Value);
+                    if (cachedValue != null)
+                    {
+                        cachedValues.Add(cachedValue);
+                    }
                 }
             }
 
             return cachedValues;
         }
 
-        public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken = default) where T : class
+        public Task SetAsync<T>(string key, T value, CancellationToken cancellationToken = default) where T : class
         {
             string cacheValue = JsonConvert.SerializeObject(value);
-
-            await _distributedCache.SetStringAsync(key, cacheValue, cancellationToken);
-
-            CacheKeys.TryAdd(key, true);
+            _cache[key] = cacheValue;
+            _cacheKeys.Add(key);
+            return Task.CompletedTask;
         }
 
-        public async Task RemoveAsync(string key, CancellationToken cancellationToken = default)
+        public Task RemoveAsync(string key, CancellationToken cancellationToken = default)
         {
-            await _distributedCache.RemoveAsync(key, cancellationToken);
-
-            CacheKeys.TryRemove(key, out bool _);
+            _cache.Remove(key);
+            _cacheKeys.Remove(key);
+            return Task.CompletedTask;
         }
 
         public void Clear(CancellationToken cancellationToken = default)
         {
-            var keys = CacheKeys.Keys.ToList();
-
-            foreach (var key in keys)
-            {
-                _distributedCache.RemoveAsync(key, cancellationToken);
-                CacheKeys.TryRemove(key, out _);
-            }
-        }
-
-        public void Dispose()
-        {
-            if (_distributedCache is IDisposable disposableCache)
-            {
-                disposableCache.Dispose();
-            }
+            _cache.Clear();
+            _cacheKeys.Clear();
         }
     }
 }
