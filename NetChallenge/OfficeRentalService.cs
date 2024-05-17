@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using MediatR;
 using NetChallenge.Application.CQRS.Bookings.Read.GetAll;
@@ -65,45 +64,19 @@ namespace NetChallenge
         public IEnumerable<BookingDto> GetBookings(string locationName, string officeName)
         {
             var bookingsResponse = _mediator.Send(new GetAllBookingsQuery()).Result;
-
-            var bookingsDtos = bookingsResponse.Select(bookingResponse => new BookingDto
-            {
-                LocationName = bookingResponse.LocationName,
-                OfficeName = bookingResponse.OfficeName,
-                DateTime = bookingResponse.DateTime,
-                Duration = bookingResponse.Duration,
-                UserName = bookingResponse.UserName
-            });
-
-            return bookingsDtos;
+            return MappingHelper.MapToBookingDtos(bookingsResponse);
         }
 
         public IEnumerable<LocationDto> GetLocations()
         {
             var locationsResponse = _mediator.Send(new GetAllLocationsQuery()).Result;
-
-            var locationsDtos = locationsResponse.Select(locationResponse => new LocationDto
-            {
-                Name = locationResponse.Name,
-                Neighborhood = locationResponse.Neighborhood
-            });
-
-            return locationsDtos;
+            return MappingHelper.MapToLocationDtos(locationsResponse);
         }
 
         public IEnumerable<OfficeDto> GetOffices(string locationName)
         {
             var officesResponse = _mediator.Send(new GetAllOfficesQuery(locationName)).Result;
-
-            var officesDtos = officesResponse.Select(or => new OfficeDto
-            {
-                LocationName = or.LocationName,
-                Name = or.Name,
-                MaxCapacity = or.MaxCapacity,
-                AvailableResources = or.AvailableResources.ToArray()
-            });
-
-            return officesDtos;
+            return MappingHelper.MapToOfficeDtos(officesResponse);
         }
 
         public IEnumerable<OfficeDto> GetOfficeSuggestions(SuggestionsRequest request)
@@ -111,15 +84,7 @@ namespace NetChallenge
             var query = new GetOfficeSuggestionsQuery(request.CapacityNeeded, request.PreferedNeigborHood, request.ResourcesNeeded);
             var suggestionsResponse = _mediator.Send(query).Result;
 
-            var officeDtos = suggestionsResponse.Select(or => new OfficeDto
-            {
-                LocationName = or.LocationName,
-                Name = or.Name,
-                MaxCapacity = or.MaxCapacity,
-                AvailableResources = or.AvailableResources.ToArray()
-            });
-
-            return officeDtos;
+            return MappingHelper.MapToOfficeDtos(suggestionsResponse);
         }
     }
 }

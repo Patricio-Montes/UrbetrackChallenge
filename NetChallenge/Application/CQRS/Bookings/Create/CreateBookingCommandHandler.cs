@@ -30,7 +30,7 @@ namespace NetChallenge.Application.CQRS.Bookings.Create
             {
                 Id = Guid.NewGuid(),
                 Office = GetOffice(request.LocationName, request.OfficeName),
-                Datetime = request.DateTime,
+                DateTime = request.DateTime,
                 Duration = request.Duration,
                 User = new User { Id = Guid.NewGuid(), Name = request.UserName },
             };
@@ -90,8 +90,8 @@ namespace NetChallenge.Application.CQRS.Bookings.Create
 
             foreach (var booking in existingBookings)
             {
-                var bookingEndTime = booking.Datetime.Add(booking.Duration);
-                if (startTime < bookingEndTime && endTime > booking.Datetime)
+                var bookingEndTime = booking.DateTime.Add(booking.Duration);
+                if (startTime < bookingEndTime && endTime > booking.DateTime)
                 {
                     return true;
                 }

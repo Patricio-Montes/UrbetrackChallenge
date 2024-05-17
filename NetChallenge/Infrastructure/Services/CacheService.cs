@@ -12,7 +12,7 @@ namespace NetChallenge.Infrastructure.Services
 {
     public class CacheService : ICacheService, IDisposable
     {
-        private static readonly ConcurrentDictionary<string, bool> CacheKeys = new ();
+        private static readonly ConcurrentDictionary<string, bool> CacheKeys = new();
         private readonly IDistributedCache _distributedCache;
 
         public CacheService(IDistributedCache distributedCache)
@@ -23,10 +23,10 @@ namespace NetChallenge.Infrastructure.Services
         public async Task<T> GetAsync<T>(string key, CancellationToken cancellationToken = default) where T : class
         {
             string? cachedValue = await _distributedCache.GetStringAsync(
-                key, 
+                key,
                 cancellationToken);
-            
-            if (cachedValue is null) 
+
+            if (cachedValue is null)
             {
                 return null;
             }
@@ -34,22 +34,6 @@ namespace NetChallenge.Infrastructure.Services
             T? value = JsonConvert.DeserializeObject<T>(cachedValue);
 
             return value;
-        }
-
-        public async Task<T> GetAsync<T>(string key, Func<Task<T>> factory, CancellationToken cancellationToken = default) where T : class
-        {
-            T? cachedValue = await GetAsync<T>(key, cancellationToken);
-
-            if (cachedValue is not null)
-            {
-                return cachedValue;
-            }
-
-            cachedValue = await factory();
-
-            await SetAsync(key, cachedValue, cancellationToken);
-
-            return cachedValue;
         }
 
         public async Task<List<T>> GetAllAsync<T>(string keyPrefix, CancellationToken cancellationToken = default) where T : class
@@ -84,16 +68,6 @@ namespace NetChallenge.Infrastructure.Services
             await _distributedCache.RemoveAsync(key, cancellationToken);
 
             CacheKeys.TryRemove(key, out bool _);
-        }
-
-        public async Task RemoveByPrefixAsync(string prefixKey, CancellationToken cancellationToken = default)
-        {
-            IEnumerable<Task> tasks = CacheKeys
-                .Keys
-                .Where(k => k.StartsWith(prefixKey))
-                .Select(k => RemoveAsync(k, cancellationToken));
-
-            await Task.WhenAll(tasks);
         }
 
         public void Clear(CancellationToken cancellationToken = default)

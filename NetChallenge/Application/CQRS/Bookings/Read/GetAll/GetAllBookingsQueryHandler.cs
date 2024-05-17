@@ -37,7 +37,7 @@ namespace NetChallenge.Application.CQRS.Bookings.Read.GetAll
                 booking.Id,
                 booking.Office.Location.Name,
                 booking.Office.Name,
-                booking.Datetime,
+                booking.DateTime,
                 booking.Duration,
                 booking.User.Name
             );

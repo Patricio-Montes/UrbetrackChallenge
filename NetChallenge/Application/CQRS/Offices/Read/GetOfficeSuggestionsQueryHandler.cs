@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using NetChallenge.Abstractions;
+using NetChallenge.Application.CQRS.Offices.Read.CustomFilters;
 using NetChallenge.Application.CQRS.Offices.Responses;
+using NetChallenge.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,17 +22,27 @@ namespace NetChallenge.Application.CQRS.Offices.Read
 
         public async Task<IEnumerable<OfficeResponse>> Handle(GetOfficeSuggestionsQuery request, CancellationToken cancellationToken)
         {
-            var allOffices = _officeRepository.AsEnumerable();
+            var specifications = new List<ISpecification<Office>>
+            {
+                OfficeSpecifications.CapacitySpecification(request.CapacityNeeded),
+                OfficeSpecifications.ResourcesSpecification(request.ResourcesNeeded),
+            };
+            var compositeSpecification = OfficeSpecifications.CompositeSpecification(specifications);
 
-            var filteredOffices = allOffices
-                .Where(o => o.MaxCapacity >= request.CapacityNeeded)
-                .Where(o => string.IsNullOrEmpty(request.PreferedNeigborHood) || o.Location.Neighborhood == request.PreferedNeigborHood)
-                .Where(o => !request.ResourcesNeeded.Any() || o.Resources.Select(r => r.Description).Intersect(request.ResourcesNeeded).Count() == request.ResourcesNeeded.Count())
-                .OrderByDescending(o => o.MaxCapacity)
-                .ThenByDescending(o => o.Resources.Count)
-                .ToList();
+            var filteredOffices = _officeRepository.AsEnumerable()
+                                    .Where(compositeSpecification.IsSatisfiedBy);
 
-            return filteredOffices.Select(office => new OfficeResponse(
+            var orderingStrategies = new List<IOrderingStrategy<Office>>
+            {
+                OfficeOrderingStrategies.NeighborhoodOrderingStrategy(request.PreferedNeigborHood),
+                //OfficeOrderingStrategies.CapacityOrderingStrategy(),
+                //OfficeOrderingStrategies.ResourcesOrderingStrategy(request.ResourcesNeeded)
+            };
+            var compositeOrderingStrategy = OfficeOrderingStrategies.CompositeOrderingStrategy(orderingStrategies);
+
+            var orderedOffices = compositeOrderingStrategy.Order(filteredOffices);
+
+            return orderedOffices.Select(office => new OfficeResponse(
                 office.Id,
                 office.Location.Name,
                 office.Name,
