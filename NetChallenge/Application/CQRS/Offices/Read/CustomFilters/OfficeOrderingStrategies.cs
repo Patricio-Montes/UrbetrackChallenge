@@ -19,7 +19,11 @@ namespace NetChallenge.Application.CQRS.Offices.Read.CustomFilters
 
         public static IOrderingStrategy<Office> ResourcesOrderingStrategy(IEnumerable<string> resourcesNeeded)
         {
-            return new OrderingStrategy<Office>(offices => offices.ThenBy(o => o.Resources.Count(res => resourcesNeeded.Contains(res.Description))));
+            return new OrderingStrategy<Office>(offices =>
+            {
+                // Ordenar las oficinas por la cantidad de recursos necesarios
+                return offices.OrderBy(o => o.Resources.Count(res => resourcesNeeded.Contains(res.Description)));
+            });
         }
 
         public static IOrderingStrategy<Office> CompositeOrderingStrategy(IEnumerable<IOrderingStrategy<Office>> strategies)

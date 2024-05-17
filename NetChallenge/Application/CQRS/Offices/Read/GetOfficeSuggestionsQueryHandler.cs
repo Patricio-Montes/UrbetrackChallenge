@@ -25,7 +25,7 @@ namespace NetChallenge.Application.CQRS.Offices.Read
             var specifications = new List<ISpecification<Office>>
             {
                 OfficeSpecifications.CapacitySpecification(request.CapacityNeeded),
-                OfficeSpecifications.ResourcesSpecification(request.ResourcesNeeded),
+                OfficeSpecifications.ResourcesSpecification(request.ResourcesNeeded)
             };
             var compositeSpecification = OfficeSpecifications.CompositeSpecification(specifications);
 
@@ -35,8 +35,8 @@ namespace NetChallenge.Application.CQRS.Offices.Read
             var orderingStrategies = new List<IOrderingStrategy<Office>>
             {
                 OfficeOrderingStrategies.NeighborhoodOrderingStrategy(request.PreferedNeigborHood),
-                //OfficeOrderingStrategies.CapacityOrderingStrategy(),
-                //OfficeOrderingStrategies.ResourcesOrderingStrategy(request.ResourcesNeeded)
+                OfficeOrderingStrategies.CapacityOrderingStrategy(),
+                OfficeOrderingStrategies.ResourcesOrderingStrategy(request.ResourcesNeeded),
             };
             var compositeOrderingStrategy = OfficeOrderingStrategies.CompositeOrderingStrategy(orderingStrategies);
 

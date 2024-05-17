@@ -12,11 +12,6 @@ namespace NetChallenge.Application.CQRS.Offices.Read.CustomFilters
             return new Specification<Office>(o => o.MaxCapacity >= capacityNeeded);
         }
 
-        public static ISpecification<Office> NeighborhoodSpecification(string preferredNeighborhood)
-        {
-            return new Specification<Office>(o => true);
-        }
-
         public static ISpecification<Office> ResourcesSpecification(IEnumerable<string> resourcesNeeded)
         {
             return new Specification<Office>(o => !resourcesNeeded.Any() || resourcesNeeded.All(r => o.AvailableResources.Contains(r)));
