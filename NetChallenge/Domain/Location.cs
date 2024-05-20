@@ -1,10 +1,9 @@
-﻿using NetChallenge.Domain.Primitives;
-using NetChallenge.Domain.ValueObjects;
+﻿using NetChallenge.Domain.ValueObjects;
 using System;
 
 namespace NetChallenge.Domain
 {
-    public class Location : AggregateRoot
+    public class Location
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

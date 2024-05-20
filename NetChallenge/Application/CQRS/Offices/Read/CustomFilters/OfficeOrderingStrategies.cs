@@ -6,7 +6,7 @@ namespace NetChallenge.Application.CQRS.Offices.Read.CustomFilters
 {
     internal class OfficeOrderingStrategies
     {
-        public static IOrderingStrategy<Office> ExecuteStrategy(string preferredNeighborhood, IEnumerable<string> resourcesNeeded)
+        public static IOrderingStrategy<Office> ExecuteStrategy(string preferredNeighborhood)
         {
             return new OrderingStrategy<Office>(offices =>
                 offices.OrderByDescending(o => o.Location.Neighborhood.Equals(preferredNeighborhood))

@@ -1,11 +1,10 @@
-﻿using NetChallenge.Domain.Primitives;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace NetChallenge.Domain
 {
-    public class Office : AggregateRoot
+    public class Office
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
